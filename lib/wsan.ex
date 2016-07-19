@@ -1,0 +1,2 @@
+defmodule Wsan do
+end
