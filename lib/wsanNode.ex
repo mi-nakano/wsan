@@ -14,30 +14,30 @@ defmodule WSANNode do
       def spawnNode(funcName) do
         spawn(fn ->
           initLayer
-          receiveMsg __MODULE__, funcName
+          receiveMsg funcName
         end)
       end
 
-      defp receiveMsg(module, funcName) do
+      defp receiveMsg(funcName) do
         receive do
           {unquote(@getLayerMsg), caller} ->
             send caller, getActiveLayers
-            receiveMsg(module, funcName)
+            receiveMsg funcName
           {unquote(@isActiveMsg), caller, layer} ->
             send caller, isActive?(layer)
-            receiveMsg(module, funcName)
+            receiveMsg funcName
           {unquote(@activateMsg), map} ->
             activateLayer map
-            receiveMsg(module, funcName)
+            receiveMsg funcName
           {unquote(@activateGroupMsg), group, map} ->
             activateLayer group, map
-            receiveMsg(module, funcName)
+            receiveMsg funcName
           {unquote(@endMsg), caller} ->
             send caller, {:ok}
           {unquote(@msg), caller, msg} ->
-            res = apply(module, funcName, [msg])
+            res = apply(__MODULE__, funcName, [msg])
             send caller, res
-            receiveMsg(module, funcName)
+            receiveMsg funcName
         end
       end
     end
