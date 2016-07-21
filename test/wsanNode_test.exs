@@ -5,10 +5,10 @@ defmodule WSANNodeTest do
   use ContextEX
   use WSANNode
   deflf routine(msg), %{:categoryA => :layer1} do
-    10
+    msg * 10
   end
   deflf routine(msg), %{} do
-    1
+    msg
   end
 
   test "Node test" do

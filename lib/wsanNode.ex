@@ -12,6 +12,8 @@ defmodule WSANNode do
   @endMsg :end
   @msg :msg
 
+  @funcName :routine
+
   defmacro __using__(_opts) do
     quote do
       require ContextEX
@@ -41,7 +43,7 @@ defmodule WSANNode do
           {unquote(@endMsg), client} ->
             send client, {:ok}
           {unquote(@msg), client, msg} ->
-            res = routine(msg)
+            res = apply(__MODULE__, unquote(@funcName), msg)
             send client, res
             receiveMsg
         end
