@@ -2,16 +2,24 @@ defmodule WSANNodeTest do
   use ExUnit.Case
   doctest WSANNode
 
-  def f(msg) do
+  use WSANNode
+  deflf f(msg), %{:categoryA => :layer1} do
+    10
+  end
+  deflf f(msg), %{} do
     1
   end
 
-  use WSANNode
   test "Node test" do
     pid = spawnNode(:f)
     sendMsg(pid, 0)
     receive do
       res -> assert res == 1
+    end
+    activateNode(pid, %{:categoryA => :layer1})
+    sendMsg(pid, 0)
+    receive do
+      res -> assert res == 10
     end
     sendEnd(pid)
     receive do
