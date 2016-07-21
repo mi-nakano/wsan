@@ -1,4 +1,10 @@
 defmodule WSANNode do
+  @moduledoc """
+  WSANNode. If we use this module, we must impl routine/1 function in user module
+
+  """
+
+
   @getLayerMsg :getLayer
   @isActiveMsg :isActive
   @activateMsg :activate
@@ -11,33 +17,33 @@ defmodule WSANNode do
       require ContextEX
       import unquote(__MODULE__)
 
-      def spawnNode(funcName) do
+      def spawnNode() do
         spawn(fn ->
           initLayer
-          receiveMsg funcName
+          receiveMsg
         end)
       end
 
-      defp receiveMsg(funcName) do
+      defp receiveMsg() do
         receive do
           {unquote(@getLayerMsg), caller} ->
             send caller, getActiveLayers
-            receiveMsg funcName
+            receiveMsg
           {unquote(@isActiveMsg), caller, layer} ->
             send caller, isActive?(layer)
-            receiveMsg funcName
+            receiveMsg
           {unquote(@activateMsg), map} ->
             activateLayer map
-            receiveMsg funcName
+            receiveMsg
           {unquote(@activateGroupMsg), group, map} ->
             activateLayer group, map
-            receiveMsg funcName
+            receiveMsg
           {unquote(@endMsg), caller} ->
             send caller, {:ok}
           {unquote(@msg), caller, msg} ->
-            res = apply(__MODULE__, funcName, [msg])
+            res = routine(msg)
             send caller, res
-            receiveMsg funcName
+            receiveMsg
         end
       end
     end

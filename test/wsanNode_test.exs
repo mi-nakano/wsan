@@ -4,15 +4,15 @@ defmodule WSANNodeTest do
 
   use ContextEX
   use WSANNode
-  deflf f(msg), %{:categoryA => :layer1} do
+  deflf routine(msg), %{:categoryA => :layer1} do
     10
   end
-  deflf f(msg), %{} do
+  deflf routine(msg), %{} do
     1
   end
 
   test "Node test" do
-    pid = spawnNode(:f)
+    pid = spawnNode()
     sendMsg(pid, 0)
     receive do
       res -> assert res == 1
