@@ -1,4 +1,4 @@
-defmodule WSANNode do
+defmodule Actor do
   @moduledoc """
   WSANNode. If we use this module, we must impl routine/1 function in user module
 

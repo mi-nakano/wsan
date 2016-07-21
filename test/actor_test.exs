@@ -1,9 +1,9 @@
-defmodule WSANNodeTest do
+defmodule ActorTest do
   use ExUnit.Case
-  doctest WSANNode
+  doctest Actor
 
   use ContextEX
-  use WSANNode
+  use Actor
   deflf routine(msg), %{:categoryA => :layer1} do
     msg * 10
   end
