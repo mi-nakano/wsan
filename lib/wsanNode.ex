@@ -9,8 +9,8 @@ defmodule WSANNode do
   @isActiveMsg :isActive
   @activateMsg :activate
   @activateGroupMsg :activateGroup
-  @msg :msg
   @endMsg :end
+  @msg :msg
 
   defmacro __using__(_opts) do
     quote do
@@ -26,11 +26,11 @@ defmodule WSANNode do
 
       defp receiveMsg() do
         receive do
-          {unquote(@getLayerMsg), caller} ->
-            send caller, getActiveLayers
+          {unquote(@getLayerMsg), client} ->
+            send client, getActiveLayers
             receiveMsg
-          {unquote(@isActiveMsg), caller, layer} ->
-            send caller, isActive?(layer)
+          {unquote(@isActiveMsg), client, layer} ->
+            send client, isActive?(layer)
             receiveMsg
           {unquote(@activateMsg), map} ->
             activateLayer map
@@ -38,51 +38,48 @@ defmodule WSANNode do
           {unquote(@activateGroupMsg), group, map} ->
             activateLayer group, map
             receiveMsg
-          {unquote(@endMsg), caller} ->
-            send caller, {:ok}
-          {unquote(@msg), caller, msg} ->
+          {unquote(@endMsg), client} ->
+            send client, {:ok}
+          {unquote(@msg), client, msg} ->
             res = routine(msg)
-            send caller, res
+            send client, res
             receiveMsg
         end
       end
     end
   end
 
-
-  defmacro requestLayer(pid) do
-    quote do
-      send unquote(pid), {unquote(@getLayerMsg), self}
+  defp receiveRet() do
+    receive do
+      res -> res
     end
   end
 
-  defmacro requestIsActive(pid, layer) do
-    quote do
-      send unquote(pid), {unquote(@isActiveMsg), self, unquote(layer)}
-    end
+  def callGetLayers(pid) do
+    send pid, {@getLayerMsg, self}
+    receiveRet
   end
 
-  defmacro activateNode(pid, map) do
-    quote do
-      send unquote(pid), {unquote(@activateMsg), unquote(map)}
-    end
+  def callIsActive?(pid, layer) do
+    send pid, {@isActiveMsg, self, layer}
+    receiveRet
   end
 
-  defmacro requestActivateGroup(pid, group, map) do
-    quote do
-      send unquote(pid), {unquote(@activateGroupMsg), unquote(group), unquote(map)}
-    end
+  def castActivate(pid, map) do
+    send pid, {@activateMsg, map}
   end
 
-  defmacro sendEnd(pid) do
-    quote do
-      send unquote(pid), {unquote(@endMsg), self}
-    end
+  def castActivateGroup(pid, group, map) do
+    send pid, {@activateGroupMsg, group, map}
   end
 
-  defmacro sendMsg(pid, msg) do
-    quote do
-      send unquote(pid), {unquote(@msg), self, unquote(msg)}
-    end
+  def callEnd(pid) do
+    send pid, {@endMsg, self}
+    receiveRet
+  end
+
+  def callMsg(pid, msg) do
+    send pid, {@msg, self, msg}
+    receiveRet
   end
 end

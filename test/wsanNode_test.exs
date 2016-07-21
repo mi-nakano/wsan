@@ -13,18 +13,9 @@ defmodule WSANNodeTest do
 
   test "Node test" do
     pid = spawnNode()
-    sendMsg(pid, 0)
-    receive do
-      res -> assert res == 1
-    end
-    activateNode(pid, %{:categoryA => :layer1})
-    sendMsg(pid, 0)
-    receive do
-      res -> assert res == 10
-    end
-    sendEnd(pid)
-    receive do
-      res -> assert res == {:ok}
-    end
+    assert callMsg(pid, [1]) == 1
+    castActivate(pid, %{:categoryA => :layer1})
+    assert callMsg(pid, [1]) == 10
+    assert callEnd(pid) == {:ok}
   end
 end
