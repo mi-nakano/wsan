@@ -17,9 +17,9 @@ defmodule WSANNode do
       require ContextEX
       import unquote(__MODULE__)
 
-      def spawnNode() do
+      def spawnNode(group \\ nil) do
         spawn(fn ->
-          initLayer
+          initLayer group
           receiveMsg
         end)
       end
