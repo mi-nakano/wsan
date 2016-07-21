@@ -44,25 +44,25 @@ defmodule WSANNode do
   end
 
 
-  defmacro sendGetLayer(pid) do
+  defmacro requestLayer(pid) do
     quote do
       send unquote(pid), {unquote(@getLayerMsg), self}
     end
   end
 
-  defmacro sendIsActive(pid, layer) do
+  defmacro requestIsActive(pid, layer) do
     quote do
       send unquote(pid), {unquote(@isActiveMsg), self, unquote(layer)}
     end
   end
 
-  defmacro sendActivate(pid, map) do
+  defmacro activateNode(pid, map) do
     quote do
       send unquote(pid), {unquote(@activateMsg), unquote(map)}
     end
   end
 
-  defmacro sendActivateGroup(pid, group, map) do
+  defmacro requestActivateGroup(pid, group, map) do
     quote do
       send unquote(pid), {unquote(@activateGroupMsg), unquote(group), unquote(map)}
     end
