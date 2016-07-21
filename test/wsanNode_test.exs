@@ -2,6 +2,7 @@ defmodule WSANNodeTest do
   use ExUnit.Case
   doctest WSANNode
 
+  use ContextEX
   use WSANNode
   deflf f(msg), %{:categoryA => :layer1} do
     10
