@@ -4,9 +4,9 @@ defmodule SimpleActor do
 
 
   deflf routine(msg), %{:categoryA => :layer1} do
-    1
+    IO.puts "msg=#{msg} @layer1"
   end
   deflf routine(msg) do
-    0
+    IO.puts "msg=#{msg} @default"
   end
 end
