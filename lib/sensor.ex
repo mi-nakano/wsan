@@ -7,7 +7,7 @@ defmodule Sensor do
   end
 
   defp sendData(parentPid, data) do
-    send parentPid, {:data, self, data}
+    send parentPid, {:event, %Event{type: :data, from: self, value: data, time: :dummy}}
   end
 
   defp routine(parentPid) do
