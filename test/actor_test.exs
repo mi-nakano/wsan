@@ -13,9 +13,9 @@ defmodule ActorTest do
 
   test "Node test" do
     pid = spawnNode()
-    assert callMsg(pid, [1]) == 1
+    assert callMsg(pid, 1) == 1
     castActivate(pid, %{:categoryA => :layer1})
-    assert callMsg(pid, [1]) == 10
+    assert callMsg(pid, 1) == 10
     assert callEnd(pid) == {:ok}
   end
 end

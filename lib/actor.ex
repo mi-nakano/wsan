@@ -44,7 +44,7 @@ defmodule Actor do
           {unquote(@endMsg), client} ->
             send client, {:ok}
           {unquote(@msg), client, msg} ->
-            res = apply(__MODULE__, unquote(@funcName), msg)
+            res = apply(__MODULE__, unquote(@funcName), [msg])
             send client, res
             receiveMsg
         end
