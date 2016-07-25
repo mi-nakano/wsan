@@ -4,9 +4,14 @@ defmodule SimpleActor do
 
 
   deflf routine(msg), %{:categoryA => :layer1} do
-    IO.puts "msg=#{msg} @layer1"
+    IO.puts "msg came @layer1!!!!!!!!!"
+    IO.inspect msg
   end
   deflf routine(msg) do
-    IO.puts "msg=#{msg} @default"
+    IO.puts "msg came @default"
+    IO.inspect msg
+
+    value = Map.get(msg, :value)
+    if (value == 5), do: activateLayer(%{:categoryA => :layer1})
   end
 end

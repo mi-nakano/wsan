@@ -7,7 +7,8 @@ defmodule Sensor do
   end
 
   defp sendData(parentPid, sensorId, data) do
-    send parentPid, {:event, %Event{type: :data, from: self, id: sensorId, value: data, time: :dummy}}
+    data = %Event{type: :data, from: self, id: sensorId, value: data, time: :dummy}
+    Actor.callMsg(parentPid, data)
   end
 
   defp routine(parentPid, sensorId) do

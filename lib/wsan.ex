@@ -3,9 +3,11 @@ defmodule Wsan do
 
   def start() do
     pid = SimpleActor.spawnNode()
-    callMsg(pid, 1)
-    castActivate(pid, %{:categoryA => :layer1})
-    callMsg(pid, 1)
+    sensors = for n <- 1..3 do
+      Sensor.start(pid, n)
+    end
+
+    Process.sleep 3000
     callEnd(pid)
   end
 end
