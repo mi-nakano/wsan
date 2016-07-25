@@ -1,20 +1,20 @@
 defmodule Sensor do
 
-  def start(parentPid) do
+  def start(parentPid, sensorId) do
     spawn(fn ->
-      routine parentPid
+      routine parentPid, sensorId
     end)
   end
 
-  defp sendData(parentPid, data) do
-    send parentPid, {:event, %Event{type: :data, from: self, value: data, time: :dummy}}
+  defp sendData(parentPid, sensorId, data) do
+    send parentPid, {:event, %Event{type: :data, from: self, id: sensorId, value: data, time: :dummy}}
   end
 
-  defp routine(parentPid) do
+  defp routine(parentPid, sensorId) do
     data = sense()
-    sendData(parentPid, data)
+    sendData(parentPid, sensorId, data)
     Process.sleep(Enum.random([300, 500, 1000]))
-    routine parentPid
+    routine parentPid, sensorId
   end
 
   defp sense() do

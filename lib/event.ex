@@ -1,3 +1,3 @@
 defmodule Event do
-  defstruct type: "", from: "", value: "", time: ""
+  defstruct type: "", from: "", id: "", value: "", time: ""
 end
