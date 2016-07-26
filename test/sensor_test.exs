@@ -4,9 +4,9 @@ defmodule SensorTest do
 
 
   test "sensor test" do
-    pid = Sensor.start(self)
+    pid = Sensor.start(self, 0)
     receive do
-      {:event, event} -> assert(1<= event.value and event.value <= 5)
+      {:msg, sensorPid, event} -> assert(1<= event.value and event.value <= 5)
     end
   end
 end
