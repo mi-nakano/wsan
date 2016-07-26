@@ -6,10 +6,6 @@ defmodule Actor do
   """
 
 
-  @getLayerMsg :getLayer
-  @isActiveMsg :isActive
-  @activateMsg :activate
-  @activateGroupMsg :activateGroup
   @endMsg :end
   @msg :msg
 
@@ -29,18 +25,6 @@ defmodule Actor do
 
       defp receiveMsg() do
         receive do
-          {unquote(@getLayerMsg), client} ->
-            send client, getActiveLayers
-            receiveMsg
-          {unquote(@isActiveMsg), client, layer} ->
-            send client, isActive?(layer)
-            receiveMsg
-          {unquote(@activateMsg), map} ->
-            activateLayer map
-            receiveMsg
-          {unquote(@activateGroupMsg), group, map} ->
-            activateLayer group, map
-            receiveMsg
           {unquote(@endMsg), client} ->
             send client, {:ok}
           {unquote(@msg), client, msg} ->
@@ -56,24 +40,6 @@ defmodule Actor do
     receive do
       res -> res
     end
-  end
-
-  def callGetLayers(pid) do
-    send pid, {@getLayerMsg, self}
-    receiveRet
-  end
-
-  def callIsActive?(pid, layer) do
-    send pid, {@isActiveMsg, self, layer}
-    receiveRet
-  end
-
-  def castActivate(pid, map) do
-    send pid, {@activateMsg, map}
-  end
-
-  def castActivateGroup(pid, group, map) do
-    send pid, {@activateGroupMsg, group, map}
   end
 
   def callEnd(pid) do
