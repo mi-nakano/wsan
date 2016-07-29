@@ -18,7 +18,7 @@ defmodule Actor do
 
       def spawnNode(group \\ nil) do
         spawn(fn ->
-          initLayer group
+          initContext group
           receiveMsg
         end)
       end
