@@ -27,6 +27,6 @@ defmodule Wsan.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:contextEX, "~> 0.1.0"}]
+    [{:contextEX, "~> 0.2.0"}]
   end
 end

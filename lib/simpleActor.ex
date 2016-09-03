@@ -11,6 +11,6 @@ defmodule SimpleActor do
     IO.puts "msg came @default"
     IO.inspect msg
 
-    if (msg.value == 5), do: activateLayer(%{:categoryA => :layer1})
+    if (msg.value == 5), do: activate_layer(%{:categoryA => :layer1})
   end
 end
