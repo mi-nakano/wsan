@@ -16,8 +16,15 @@ defmodule Actor do
       require ContextEX
       import unquote(__MODULE__)
 
-      def spawnNode(group \\ nil) do
+      def spawn(group \\ nil) do
         spawn(fn ->
+          init_context group
+          receiveMsg
+        end)
+      end
+
+      def spawn_on_node(node, group \\ nil) do
+        Node.spawn(node , fn ->
           init_context group
           receiveMsg
         end)
