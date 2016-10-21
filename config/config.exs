@@ -29,6 +29,7 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
+# Replace localhost to your PC-name
 config :wsan, :routing_table,
-        [{?a..?m, :"node1"},
-         {?n..?z, :"node2"}]
+        [{1, :"node1@localhost"},
+         {2, :"node2@localhost"}]

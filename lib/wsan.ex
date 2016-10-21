@@ -3,8 +3,8 @@ defmodule Wsan do
 
   def start() do
     actors = for n <- 1..3 do
-      actor = Wsan.Router.route("a", SimpleActor, :spawn, [])
-      for n <- 1..3, do: Wsan.Router.route("z", Sensor, :start, [actor, n])
+      actor = Wsan.Router.route(1, SimpleActor, :spawn, [])
+      for n <- 1..3, do: Wsan.Router.route(2, Sensor, :start, [actor, n])
       actor
     end
 

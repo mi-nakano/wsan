@@ -5,10 +5,10 @@ defmodule RouterTest do
 
 
   test "router" do
-    table = [{?a..?c, :"node1"},
-             {?d..?z, :"node2"}]
+    table = [{1, :"node1"},
+             {2, :"node2"}]
     Application.put_env(:wsan, :routing_table, table)
-    assert Wsan.Router.lookup_table("aaa") == :"node1"
-    assert Wsan.Router.lookup_table("ddd") == :"node2"
+    assert Wsan.Router.lookup_table(1) == :"node1"
+    assert Wsan.Router.lookup_table(2) == :"node2"
   end
 end
