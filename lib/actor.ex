@@ -23,13 +23,6 @@ defmodule Actor do
         end)
       end
 
-      def spawn_on_node(node, group \\ nil) do
-        Node.spawn(node , fn ->
-          init_context group
-          receiveMsg
-        end)
-      end
-
       defp receiveMsg() do
         receive do
           {unquote(@endMsg), client} ->
