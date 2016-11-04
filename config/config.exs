@@ -31,5 +31,19 @@ use Mix.Config
 
 # Replace localhost to your PC-name
 config :wsan, :routing_table,
-        [{1, :"node1@localhost"},
-         {2, :"node2@localhost"}]
+        [{1, :"node1@nakano-MBA"},
+         {2, :"node2@nakano-MBA"},
+         {3, :"node3@nakano-MBA"}]
+
+# logger config
+config :logger,
+  backends: [{LoggerFileBackend, :sensor}, {LoggerFileBackend, :actor}]
+
+config :logger, :sensor,
+  path: "./log/wsan/sensor.log",
+  level: :info,
+  metadata_filter: [type: :sensor]
+config :logger, :actor,
+  path: "./log/wsan/actor.log",
+  level: :info,
+  metadata_filter: [type: :actor]

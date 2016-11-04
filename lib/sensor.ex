@@ -1,4 +1,5 @@
 defmodule Sensor do
+  require Logger
 
   def start(parent_pid, sensor_id) do
     spawn(fn ->
@@ -19,6 +20,8 @@ defmodule Sensor do
   end
 
   defp sense() do
-    Enum.random(1..5)
+    data = Enum.random(1..5)
+    Logger.info("sense! data=#{data}", type: :sensor)
+    data
   end
 end

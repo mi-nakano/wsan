@@ -27,6 +27,7 @@ defmodule Wsan.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:contextEX, "~> 0.2.0"}]
+    [{:contextEX, "~> 0.2.0"},
+     {:logger_file_backend, "~> 0.0.9"}]
   end
 end
