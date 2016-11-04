@@ -19,4 +19,6 @@ erl_crash.dump
 *.app
 *.beam
 
+log/
+
 mix.lock
