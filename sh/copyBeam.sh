@@ -2,9 +2,10 @@
 cd `dirname $0`
 cd ../
 
-echo "copy *.beam file"
+rm -f ./*.beam
 
-# beamファイルの用意
+echo "mix compile"
 `mix compile`
-rm ./*.beam
+
+echo "copy *.beam file"
 find . -name "*.beam" -type f | xargs -J% cp % ./
