@@ -1,6 +1,6 @@
-defmodule SimpleActor do
+defmodule Wsan.SimpleActor do
   use ContextEX
-  use Actor
+  use Wsan.Actor
   require Logger
 
 

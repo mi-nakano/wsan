@@ -1,5 +1,7 @@
-defmodule Sensor do
+defmodule Wsan.Sensor do
   require Logger
+  require Wsan.Actor
+  alias Wsan.Event, as: Event
 
   def start(parent_pid, sensor_id) do
     spawn(fn ->
@@ -9,7 +11,7 @@ defmodule Sensor do
 
   defp sendData(parent_pid, sensor_id, data) do
     send_data = %Event{type: :data, from: self, id: sensor_id, value: data, time: :dummy}
-    Actor.callMsg(parent_pid, send_data)
+    Wsan.Actor.callMsg(parent_pid, send_data)
   end
 
   defp routine(parent_pid, sensor_id) do

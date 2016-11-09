@@ -1,4 +1,4 @@
-defmodule Actor do
+defmodule Wsan.Actor do
   @moduledoc """
   Actor module. If we use this module, we must impl routine/1 function in user module.
   If you import this module, only message-sending functions are import in your module.

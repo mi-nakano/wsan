@@ -1,10 +1,10 @@
 defmodule SensorTest do
   use ExUnit.Case
-  doctest Sensor
+  doctest Wsan.Sensor
 
 
   test "sensor test" do
-    pid = Sensor.start(self, 0)
+    pid = Wsan.Sensor.start(self, 0)
     receive do
       {:msg, sensor_pid, event} ->
         assert(1<= event.value and event.value <= 5)
