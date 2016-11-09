@@ -42,13 +42,19 @@ defmodule Wsan.Actor do
     end
   end
 
-  def callEnd(pid) do
+  def castEnd(pid) do
     send pid, {@endMsg, self}
+  end
+  def callEnd(pid) do
+    castEnd(pid)
     receiveRet
   end
 
-  def callMsg(pid, msg) do
+  def castMsg(pid, msg) do
     send pid, {@msg, self, msg}
+  end
+  def callMsg(pid, msg) do
+    castMsg(pid, msg)
     receiveRet
   end
 end
