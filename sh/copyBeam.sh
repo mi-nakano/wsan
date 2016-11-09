@@ -1,5 +1,5 @@
 #!/bin/bash
-pushd `pwd`
+pushd `pwd` > /dev/null
 cd `dirname $0`
 cd ../
 
@@ -11,4 +11,5 @@ echo "mix compile"
 echo "copy *.beam file"
 find . -name "*.beam" -type f | xargs -J% cp % ./
 
-popd
+popd > /dev/null
+

@@ -1,8 +1,8 @@
 #!/bin/bash
-pushd `pwd`
+pushd `pwd` > /dev/null
 cd `dirname $0`
 
 sh ./removeLog.sh
 sh ./copyBeam.sh
 
-popd
+popd > /dev/null
