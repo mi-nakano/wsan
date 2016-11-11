@@ -5,7 +5,7 @@ defmodule Wsan.Router do
 
     # If the entry node is the current node
     if node_name == node() do
-      apply(mod, fun, args)
+      spawn(mod, fun, args)
     else
       node_name
         |> Node.spawn(mod, fun, args)

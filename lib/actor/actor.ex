@@ -17,10 +17,11 @@ defmodule Wsan.Actor do
       import unquote(__MODULE__)
 
       def spawn(group \\ nil) do
-        spawn(fn ->
-          init_context group
-          receiveMsg
-        end)
+        spawn(fn -> start(group) end)
+      end
+      def start(group \\ nil) do
+        init_context group
+        receiveMsg
       end
 
       defp receiveMsg() do
