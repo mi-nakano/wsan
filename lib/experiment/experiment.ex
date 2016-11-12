@@ -1,5 +1,4 @@
 defmodule Experiment do
-  require Wsan
   require Wsan.Router
   use ContextEX
 
