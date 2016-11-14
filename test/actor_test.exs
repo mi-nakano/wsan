@@ -14,8 +14,7 @@ defmodule ActorTest do
   test "Actor" do
     pid = spawn()
     assert callMsg(pid, 1) == 1
-    activate_layer(pid, %{:categoryA => :layer1})
-    Process.sleep 100
+    call_activate_layer(pid, %{:categoryA => :layer1})
     assert callMsg(pid, 1) == 10
     assert callEnd(pid) == {:ok}
   end
