@@ -41,4 +41,36 @@ defmodule Experiment do
         pingpong(parent)
     end
   end
+
+  def start_pingpong_lf() do
+    # prepare
+    n1 = Wsan.Router.route(1, Experiment, :pingpong_lf, [self])
+    n2 = Wsan.Router.route(2, Experiment, :pingpong_lf, [self])
+
+    # do something
+    measure(fn ->
+      send n1, {n2, @num}
+      receive do
+        :ok -> :ok
+      end
+    end)
+  end
+
+  def pingpong_lf(parent) do
+    init_context()
+    loop(parent)
+  end
+  defp loop(parent) do
+    receive do
+      {_, 0} ->
+        send parent, :ok
+      {pid, n} ->
+        pingpong_lf_body(pid, n)
+        loop(parent)
+    end
+  end
+
+  deflf pingpong_lf_body(pid, n) do
+    send pid, {self, n-1}
+  end
 end
