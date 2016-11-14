@@ -17,6 +17,17 @@ defmodule Experiment do
     Experiment.Analyzer.analyze(filepath)
   end
 
+  def experiment2(filepath \\ "./test.csv") do
+    # 上書き
+    File.write(filepath, "")
+    for _ <- 1..@num_repeat do
+      time = start_pingpong_lf()
+      File.write(filepath, Integer.to_string(time), [:append])
+      File.write(filepath, "\n", [:append])
+    end
+    Experiment.Analyzer.analyze(filepath)
+  end
+
   # funcを実行し、それにかかった時間を出力
   def measure(func, args \\ []) do
     prev = System.os_time()
