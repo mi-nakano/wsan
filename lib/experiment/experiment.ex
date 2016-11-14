@@ -1,8 +1,21 @@
 defmodule Experiment do
   require Wsan.Router
   use ContextEX
+  require Experiment.Analyzer
 
-  @num 100
+  @num_repeat 100
+  @num_token 100
+
+  def experiment1(filepath \\ "./test.csv") do
+    # 上書き
+    File.write(filepath, "")
+    for _ <- 1..@num_repeat do
+      time = start_pingpong()
+      File.write(filepath, Integer.to_string(time), [:append])
+      File.write(filepath, "\n", [:append])
+    end
+    Experiment.Analyzer.analyze(filepath)
+  end
 
   # funcを実行し、それにかかった時間を出力
   def measure(func, args \\ []) do
@@ -12,8 +25,8 @@ defmodule Experiment do
     apply(func, args)
 
     diff = System.os_time() - prev
-    IO.write "Time: "
-    IO.inspect diff
+    # IO.write "Time: "
+    # IO.inspect diff
     diff
   end
 
@@ -24,7 +37,7 @@ defmodule Experiment do
 
     # do something
     measure(fn ->
-      send n1, {n2, @num}
+      send n1, {n2, @num_token}
       receive do
         :ok -> :ok
       end
@@ -49,7 +62,7 @@ defmodule Experiment do
 
     # do something
     measure(fn ->
-      send n1, {n2, @num}
+      send n1, {n2, @num_token}
       receive do
         :ok -> :ok
       end

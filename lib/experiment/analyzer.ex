@@ -16,5 +16,6 @@ defmodule Experiment.Analyzer do
     IO.inspect sum
     IO.write "AVG: "
     IO.inspect(sum / count)
+    :ok
   end
 end
