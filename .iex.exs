@@ -5,15 +5,17 @@ name_prefix = "node"  # ノード名
 name_suffix = "@nakano-MBA" # ホスト名
 # 使用するモジュール名
 modules = [Elixir.Wsan.Actor,
-  Elixir.ContextEX, Elixir.Wsan.Event,
-  Elixir.Enumerable, Elixir.Wsan.Router,
-  Elixir.Experiment, Elixir.Wsan.Sensor,
-  Elixir.IEx.Info, Elixir.Wsan.SimpleActor,
-  Elixir.Inspect, Elixir.Wsan,
+  Elixir.ContextEX,
   Elixir.LoggerFileBackend,
   Elixir.Sample,
+  Elixir.Experiment,
   Elixir.Experiment.Pingpong,
-  Elixir.Experiment.Analyzer
+  Elixir.Experiment.Analyzer,
+  Elixir.Wsan,
+  Elixir.Wsan.Router,
+  Elixir.Wsan.Sensor,
+  Elixir.Wsan.Event,
+  Elixir.Wsan.SimpleActor,
 ]
 # connect Nodes
 for n <- 1 .. max_node do
