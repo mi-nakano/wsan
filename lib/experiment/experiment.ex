@@ -6,7 +6,14 @@ defmodule Experiment do
   @num_repeat 100
   @num_token 100
 
-  def experiment1(filepath \\ "./test.csv") do
+  def experiment1(filepath \\ ".test.csv") do
+    IO.puts "-----experiment1_1-----"
+    experiment1_1(filepath)
+    IO.puts "-----experiment1_2-----"
+    experiment1_2(filepath)
+  end
+
+  defp experiment1_1(filepath) do
     # 上書き
     File.write(filepath, "")
     for _ <- 1..@num_repeat do
@@ -17,7 +24,7 @@ defmodule Experiment do
     Experiment.Analyzer.analyze(filepath)
   end
 
-  def experiment2(filepath \\ "./test.csv") do
+  defp experiment1_2(filepath) do
     # 上書き
     File.write(filepath, "")
     for _ <- 1..@num_repeat do
