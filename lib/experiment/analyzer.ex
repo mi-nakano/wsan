@@ -8,9 +8,7 @@ defmodule Experiment.Analyzer do
     apply(func, args)
 
     diff = System.os_time() - prev
-    # IO.write "Time: "
-    # IO.inspect diff
-    diff
+    convert(diff)
   end
 
   def analyze(filepath) do
@@ -30,5 +28,10 @@ defmodule Experiment.Analyzer do
     IO.write "AVG: "
     IO.inspect(sum / count)
     :ok
+  end
+
+  # 時間の単位をnsに変換
+  defp convert(time) do
+    System.convert_time_unit(time, :native, :nanoseconds)
   end
 end
