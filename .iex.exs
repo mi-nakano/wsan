@@ -12,6 +12,8 @@ modules = [Elixir.Wsan.Actor,
   Elixir.Inspect, Elixir.Wsan,
   Elixir.LoggerFileBackend,
   Elixir.Sample,
+  Elixir.Experiment.Pingpong,
+  Elixir.Experiment.Analyzer
 ]
 # connect Nodes
 for n <- 1 .. max_node do

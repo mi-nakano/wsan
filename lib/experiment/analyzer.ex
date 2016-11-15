@@ -1,5 +1,18 @@
 defmodule Experiment.Analyzer do
 
+  # funcを実行し、それにかかった時間を出力
+  def measure(func, args \\ []) do
+    prev = System.os_time()
+
+    # do something
+    apply(func, args)
+
+    diff = System.os_time() - prev
+    # IO.write "Time: "
+    # IO.inspect diff
+    diff
+  end
+
   def analyze(filepath) do
     {:ok, fp} = File.open(filepath, [:read, :utf8])
     # コメント行を無視して全て数値に変換
