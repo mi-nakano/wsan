@@ -6,8 +6,8 @@ defmodule Experiment.Pingpong do
 
   def measure_pingpong(num_token) do
     # prepare
-    n1 = Wsan.Router.route(1, __MODULE__, :pingpong, [self])
-    n2 = Wsan.Router.route(2, __MODULE__, :pingpong, [self])
+    n1 = Wsan.Router.route(2, __MODULE__, :pingpong, [self])
+    n2 = Wsan.Router.route(3, __MODULE__, :pingpong, [self])
 
     # do something
     measure(fn ->
