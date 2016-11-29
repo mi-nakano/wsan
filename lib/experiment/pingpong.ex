@@ -18,6 +18,27 @@ defmodule Experiment.Pingpong do
     end)
   end
 
+  def measure_pingpong_multiple(num_token, num_pairs) do
+    # prepare
+    pairs = for _ <- 1..num_pairs do
+      n1 = Wsan.Router.route(1, __MODULE__, :pingpong, [self])
+      n2 = Wsan.Router.route(2, __MODULE__, :pingpong, [self])
+      {n1, n2}
+    end
+
+    measure(fn ->
+      for pair <- pairs do
+        send elem(pair,0), {elem(pair, 1), num_token}
+      end
+      for _ <- 1..num_pairs do
+        receive do
+          :ok -> :ok
+        end
+      end
+    end)
+  end
+
+
   # n=0 になるまで減算、0になったらparentに送信
   def pingpong(parent) do
     receive do
@@ -39,6 +60,26 @@ defmodule Experiment.Pingpong do
       send n1, {n2, num_token}
       receive do
         :ok -> :ok
+      end
+    end)
+  end
+
+  def measure_pingpong_multiple_lf(num_token, num_pairs) do
+    # prepare
+    pairs = for _ <- 1..num_pairs do
+      n1 = Wsan.Router.route(1, __MODULE__, :pingpong_lf, [self])
+      n2 = Wsan.Router.route(2, __MODULE__, :pingpong_lf, [self])
+      {n1, n2}
+    end
+
+    measure(fn ->
+      for pair <- pairs do
+        send elem(pair,0), {elem(pair, 1), num_token}
+      end
+      for _ <- 1..num_pairs do
+        receive do
+          :ok -> :ok
+        end
       end
     end)
   end
