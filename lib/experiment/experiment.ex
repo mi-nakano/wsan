@@ -17,6 +17,10 @@ defmodule Experiment do
   end
 
   def experiment1(filepath \\ "./log/test.log") do
+    IO.puts "========== experiment1 =========="
+    IO.puts "filepath = #{filepath}"
+    IO.puts "@num_repeat = #{@num_repeat}"
+    IO.puts "@num_token = #{@num_token}"
     IO.puts "-----experiment1_1-----"
     experiment1_1(filepath)
     IO.puts "-----experiment1_2-----"
@@ -24,6 +28,10 @@ defmodule Experiment do
   end
 
   def experiment2(filepath \\ "./log/test.log") do
+    IO.puts "========== experiment2 =========="
+    IO.puts "filepath = #{filepath}"
+    IO.puts "@num_token = #{@num_token}"
+    IO.puts "@num_pairs = #{@num_pairs}"
     IO.puts "-----experiment2_1-----"
     experiment2_1(filepath)
     IO.puts "-----experiment2_2-----"
