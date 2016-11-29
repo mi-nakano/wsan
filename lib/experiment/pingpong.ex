@@ -4,12 +4,12 @@ defmodule Experiment.Pingpong do
   use ContextEX
 
 
-  def measure_pingpong(num_token) do
+  defp routine(num_token, func_atom) do
     # prepare
-    n1 = Wsan.Router.route(1, __MODULE__, :pingpong, [self])
-    n2 = Wsan.Router.route(2, __MODULE__, :pingpong, [self])
+    n1 = Wsan.Router.route(1, __MODULE__, func_atom, [self])
+    n2 = Wsan.Router.route(2, __MODULE__, func_atom, [self])
 
-    # do something
+    # do something, measure time
     measure(fn ->
       send n1, {n2, num_token}
       receive do
@@ -18,14 +18,15 @@ defmodule Experiment.Pingpong do
     end)
   end
 
-  def measure_pingpong_multiple(num_token, num_pairs) do
+  defp routine_multiple(num_token, num_pairs, func_atom) do
     # prepare
     pairs = for _ <- 1..num_pairs do
-      n1 = Wsan.Router.route(1, __MODULE__, :pingpong, [self])
-      n2 = Wsan.Router.route(2, __MODULE__, :pingpong, [self])
+      n1 = Wsan.Router.route(1, __MODULE__, func_atom, [self])
+      n2 = Wsan.Router.route(2, __MODULE__, func_atom, [self])
       {n1, n2}
     end
 
+    # do something, measure time
     measure(fn ->
       for pair <- pairs do
         send elem(pair,0), {elem(pair, 1), num_token}
@@ -36,6 +37,20 @@ defmodule Experiment.Pingpong do
         end
       end
     end)
+  end
+
+  def measure_pingpong(num_token) do
+    routine(num_token, :pingpong)
+  end
+  def measure_pingpong_lf(num_token) do
+    routine(num_token, :pingpong_lf)
+  end
+
+  def measure_pingpong_multiple(num_token, num_pairs) do
+    routine_multiple(num_token, num_pairs, :pingpong)
+  end
+  def measure_pingpong_multiple_lf(num_token, num_pairs) do
+    routine_multiple(num_token, num_pairs, :pingpong_lf)
   end
 
 
@@ -50,44 +65,11 @@ defmodule Experiment.Pingpong do
     end
   end
 
-  def measure_pingpong_lf(num_token) do
-    # prepare
-    n1 = Wsan.Router.route(1, __MODULE__, :pingpong_lf, [self])
-    n2 = Wsan.Router.route(2, __MODULE__, :pingpong_lf, [self])
-
-    # do something
-    measure(fn ->
-      send n1, {n2, num_token}
-      receive do
-        :ok -> :ok
-      end
-    end)
-  end
-
-  def measure_pingpong_multiple_lf(num_token, num_pairs) do
-    # prepare
-    pairs = for _ <- 1..num_pairs do
-      n1 = Wsan.Router.route(1, __MODULE__, :pingpong_lf, [self])
-      n2 = Wsan.Router.route(2, __MODULE__, :pingpong_lf, [self])
-      {n1, n2}
-    end
-
-    measure(fn ->
-      for pair <- pairs do
-        send elem(pair,0), {elem(pair, 1), num_token}
-      end
-      for _ <- 1..num_pairs do
-        receive do
-          :ok -> :ok
-        end
-      end
-    end)
-  end
-
   def pingpong_lf(parent) do
     init_context()
     loop(parent)
   end
+
   defp loop(parent) do
     receive do
       {_, 0} ->
