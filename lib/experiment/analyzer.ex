@@ -2,17 +2,18 @@ defmodule Experiment.Analyzer do
 
   # funcを実行し、それにかかった時間を出力
   def measure(func, args \\ []) do
-    prev = System.os_time()
-
+    start_time = measure_time()
     # do something
     apply(func, args)
-
-    diff = System.os_time() - prev
+    end_time = measure_time()
+    diff = end_time - start_time
     convert(diff)
   end
 
+  def measure_time(), do: System.os_time()
+
   def analyze(filepath) do
-    {:ok, fp} = File.open(filepath, [:read, :utf8])
+    fp = File.open!(filepath, [:read, :utf8])
     # コメント行を無視して全て数値に変換
     list = IO.stream(fp, :line)
       |> Enum.filter_map(fn(line) -> String.at(line, 0) != "#" end,
@@ -23,15 +24,15 @@ defmodule Experiment.Analyzer do
 
     IO.write "COUNT: "
     IO.inspect count
-    IO.write "SUM(ms): "
+    IO.write "SUM(milliseconds): "
     IO.inspect sum
-    IO.write "AVG(ms): "
+    IO.write "AVG(milliseconds): "
     IO.inspect(sum / count)
     :ok
   end
 
   # 時間の単位をmsに変換
-  defp convert(time) do
+  def convert(time) do
     System.convert_time_unit(time, :native, :milliseconds)
   end
 end
