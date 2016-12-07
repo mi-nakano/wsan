@@ -10,8 +10,8 @@ defmodule Experiment do
   defp do_experimet(num, output_file, measure_func, args \\ []) do
     File.write(output_file, "")
     for _ <- 1..num do
-      time = apply(measure_func, args)
-      File.write(output_file, Integer.to_string(time), [:append])
+      result = apply(measure_func, args)
+      File.write(output_file, Integer.to_string(result), [:append])
       File.write(output_file, "\n", [:append])
     end
   end
@@ -36,6 +36,15 @@ defmodule Experiment do
     experiment2_1(filepath)
     IO.puts "-----experiment2_2-----"
     experiment2_2(filepath)
+  end
+
+  def experiment_activation(filepath \\ "./log/test.log") do
+    IO.puts "========== experiment_activation =========="
+    IO.puts "filepath = #{filepath}"
+    IO.puts "@num_repeat = #{@num_repeat}"
+    IO.puts "-----experiment-----"
+    do_experimet(@num_repeat, filepath, &Experiment.Activation.measure_activation/0, [])
+    Experiment.Analyzer.analyze(filepath)
   end
 
   defp experiment1_1(filepath) do
