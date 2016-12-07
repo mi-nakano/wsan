@@ -23,15 +23,15 @@ defmodule Experiment.Analyzer do
 
     IO.write "COUNT: "
     IO.inspect count
-    IO.write "SUM: "
+    IO.write "SUM(ms): "
     IO.inspect sum
-    IO.write "AVG: "
+    IO.write "AVG(ms): "
     IO.inspect(sum / count)
     :ok
   end
 
-  # 時間の単位をnsに変換
+  # 時間の単位をmsに変換
   defp convert(time) do
-    System.convert_time_unit(time, :native, :nanoseconds)
+    System.convert_time_unit(time, :native, :milliseconds)
   end
 end
