@@ -36,10 +36,10 @@ defmodule Experiment do
     IO.puts "num_token = #{@num_token}"
     IO.puts "num_pairs = #{num_pairs}"
     IO.puts "-----experiment2_1-----"
-    do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple/2, [@num_token, @num_pairs])
+    do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple/2, [@num_token, num_pairs])
 
     IO.puts "-----experiment2_2-----"
-    do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple_lf/2, [@num_token, @num_pairs])
+    do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple_lf/2, [@num_token, num_pairs])
   end
 
   def experiment_activation(num_process \\ @num_process) do
@@ -47,6 +47,6 @@ defmodule Experiment do
     IO.puts "num_repeat = #{@num_repeat}"
     IO.puts "num_process = #{num_process}"
     IO.puts "-----experiment-----"
-    do_experimet(@num_repeat, @file_name, &Experiment.Activation.measure_activation/1, [@num_process])
+    do_experimet(@num_repeat, @file_name, &Experiment.Activation.measure_activation/1, [num_process])
   end
 end

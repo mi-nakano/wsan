@@ -24,9 +24,9 @@ defmodule Experiment.Analyzer do
 
     IO.write "COUNT: "
     IO.inspect count
-    IO.write "SUM(milliseconds): "
+    IO.write "SUM(milliSec): "
     IO.inspect sum
-    IO.write "AVG(milliseconds): "
+    IO.write "AVG(milliSec): "
     IO.inspect(sum / count)
     :ok
   end
