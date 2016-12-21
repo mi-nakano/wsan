@@ -23,10 +23,10 @@ defmodule Experiment do
     IO.puts "========== experiment1 =========="
     IO.puts "num_repeat = #{@num_repeat}"
     IO.puts "num_token = #{@num_token}"
-    IO.puts "-----experiment1_1-----"
+    IO.puts "----- pingpong -----"
     do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong/1, [@num_token])
 
-    IO.puts "-----experiment1_2-----"
+    IO.puts "----- pingpong (layered) -----"
     do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_lf/1, [@num_token])
   end
 
@@ -35,10 +35,10 @@ defmodule Experiment do
     IO.puts "num_repeat = #{@num_repeat}"
     IO.puts "num_token = #{@num_token}"
     IO.puts "num_pairs = #{num_pairs}"
-    IO.puts "-----experiment2_1-----"
+    IO.puts "----- pingpong n pair-----"
     do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple/2, [@num_token, num_pairs])
 
-    IO.puts "-----experiment2_2-----"
+    IO.puts "----- pingpong n pair (layered) -----"
     do_experimet(@num_repeat, @file_name, &Experiment.Pingpong.measure_pingpong_multiple_lf/2, [@num_token, num_pairs])
   end
 
@@ -46,7 +46,9 @@ defmodule Experiment do
     IO.puts "========== experiment_activation =========="
     IO.puts "num_repeat = #{@num_repeat}"
     IO.puts "num_process = #{num_process}"
-    IO.puts "-----experiment-----"
+    IO.puts "----- comparison experiment -----"
+    do_experimet(@num_repeat, @file_name, &Experiment.Activation.measure_activation_comparison/1, [num_process])
+    IO.puts "----- group activation -----"
     do_experimet(@num_repeat, @file_name, &Experiment.Activation.measure_activation/1, [num_process])
   end
 end
