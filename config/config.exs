@@ -30,10 +30,12 @@ use Mix.Config
 #     import_config "#{Mix.env}.exs"
 
 # Replace localhost to your PC-name
-config :wsan, :routing_table,
-        [{1, :"node1@nakano-MBA"},
-         {2, :"node2@nakano-MBA"},
-         {3, :"node3@nakano-MBA"}]
+config :wsan, :routing_table, [
+  {1, :"pi@192.168.120.162"},
+  {2, :"pi@192.168.120.163"},
+  {3, :"pi@192.168.120.164"},
+  {4, :"pi@192.168.120.165"},
+]
 
 # logger config
 config :logger,
