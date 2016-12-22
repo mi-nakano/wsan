@@ -3,20 +3,23 @@ defmodule Experiment do
   use ContextEX
   require Experiment.Analyzer
 
-  @file_name "./log/experiment.log"
+  @log_dir "./log/"
+  @file_name "experiment.log"
   @num_repeat 10
   @num_token 100
   @num_pairs 100
   @num_process 100
 
   defp do_experimet(num, output_file, measure_func, args \\ []) do
-    File.write(output_file, "")
+    unless (File.exists? @log_dir), do: File.mkdir @log_dir
+    file_path = @log_dir <> output_file
+    File.write(file_path, "")
     for _ <- 1..num do
       result = apply(measure_func, args)
-      File.write(output_file, Integer.to_string(result), [:append])
-      File.write(output_file, "\n", [:append])
+      File.write(file_path, Integer.to_string(result), [:append])
+      File.write(file_path, "\n", [:append])
     end
-    Experiment.Analyzer.analyze(output_file)
+    Experiment.Analyzer.analyze(file_path)
   end
 
   def experiment1() do
