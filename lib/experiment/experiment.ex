@@ -17,6 +17,7 @@ defmodule Experiment do
       result = apply(measure_func, args)
       File.write(file_path, Integer.to_string(result), [:append])
       File.write(file_path, "\n", [:append])
+      remove_registered_process
     end
     Experiment.Analyzer.analyze(file_path)
   end
