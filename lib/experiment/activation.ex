@@ -33,48 +33,26 @@ defmodule Experiment.Activation do
   # activationの速度を測定
   def measure_activation(num_process) do
     pid_list = for n <- 1..num_process do
-      p = Wsan.Router.route(2, __MODULE__, :routine, [self])
+      p = Wsan.Router.route(2, __MODULE__, :routine, [])
     end
+
+    time = measure(fn ->
+      call_activate_group(@group_name, @context)
+    end)
 
     for p <- pid_list do
-      send p, :start
+      send p, :end
     end
 
-    measure(fn ->
-      cast_activate_group(@group_name, @context)
-
-      for _ <- pid_list do
-        receive do
-          result -> result
-        end
-      end
-    end)
+    time
   end
 
-  def routine(parent) do
+  def routine() do
     init_context(@group_name)
 
     # メッセージがくるまで待機
     receive do
-      :start -> :start
+      :end -> :end
     end
-
-    result = loop()
-    send parent, result
-  end
-
-  defp loop() do
-    if is_end?() do
-      :ok
-    else
-      loop()
-    end
-  end
-
-  deflf is_end?(), @context do
-    true
-  end
-  deflf is_end?() do
-    false
   end
 end
