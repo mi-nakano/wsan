@@ -1,11 +1,13 @@
 defmodule Wsan.Actor do
   use ContextEX
   require Logger
+  alias Wsan.Sensor.Event, as: Event
 
-  @endMsg :end
+  @end_msg :end
   @msg :msg
 
   def start(id, group \\ nil) do
+    print(id, "----- start -----")
     init_context group
 
     # センサーノードを宣言
@@ -17,51 +19,67 @@ defmodule Wsan.Actor do
 
   defp loop(id) do
     receive do
-      {@endMsg, client} ->
-        send client, {:ok}
-        print(id, "end.")
-      {@msg, client, msg} ->
-        res = routine(id, msg)
-        send client, res
+      {@end_msg, sender} ->
+        send sender, {:ok}
+        print(id, "----- end -----")
+      {@msg, _sender, msg} ->
+        receive_msg(id, msg)
         loop id
+    after
+      1_00 ->
+        routine(id)
+        loop(id)
     end
+  end
+
+
+  # sensorノードからのメッセージ受け取り
+  defp receive_msg(id, %Event{type: :temperature, value: val}) when val >= 5 do
+    print(id, "Recieve: temperature, val=#{val}")
+    cast_activate_layer(%{:temperature => :high})
+  end
+  defp receive_msg(id, %event{type: :temperature, value: val}) when val <= 3 do
+    print(id, "recieve: temperature, val=#{val}")
+    cast_activate_layer(%{:temperature => :low})
+  end
+  defp receive_msg(id, %Event{type: :smoke, value: val}) when val == true do
+    print(id, "Recieve: smoke, val=#{val}")
+    cast_activate_layer(%{:smoke => true})
+  end
+  defp receive_msg(id, %Event{type: :smoke, value: val}) when val == false do
+    print(id, "Recieve: smoke, val=#{val}")
+    cast_activate_layer(%{:smoke => false})
+  end
+  defp receive_msg(id, msg) do
+    print(id, "Recieve: msg")
+    print(msg)
+  end
+
+  # 文脈に応じた処理
+  deflf routine(id), %{:status => :emergency} do
+    # do something
+    print(id, "Routine: Status is Emergency!")
+  end
+  deflf routine(id), %{:temperature => :high, :smoke => true} do
+    print(id, "Routine: Emergency occured!")
+    cast_activate_group(:actor, %{:status => :emergency})
+  end
+  deflf routine(id) do
+    print(id, "Routine: Default")
   end
 
 
   defp print(id, string), do: Logger.info("Actor#{id}: #{string}", type: :actor)
   defp print(msg), do: Logger.info(inspect(msg), type: :actor)
 
-
-  deflf routine(id, msg), %{:categoryA => :layer1} do
-    print(id, "msg came @layer1!!!!")
-    print(msg)
-  end
-  deflf routine(id, msg) do
-    print(id, "msg came @defalut.")
-    print(msg)
-    if (msg.value == 5), do: cast_activate_layer(%{:categoryA => :layer1})
-  end
-
-
-  def cast_end(pid) do
-    send pid, {@endMsg, self}
-  end
   def call_end(pid) do
-    cast_end(pid)
-    receive_ret
+    send pid, {@end_msg, self}
+    receive do
+      res -> res
+    end
   end
 
   def cast_msg(pid, msg) do
     send pid, {@msg, self, msg}
-  end
-  def call_msg(pid, msg) do
-    cast_msg(pid, msg)
-    receive_ret
-  end
-
-  defp receive_ret() do
-    receive do
-      res -> res
-    end
   end
 end
