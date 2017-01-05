@@ -1,5 +1,5 @@
 defmodule Experiment do
-  require Wsan.Router
+  require Router
   use ContextEX
   require Experiment.Analyzer
 

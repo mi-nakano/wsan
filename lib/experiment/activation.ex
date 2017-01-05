@@ -1,5 +1,5 @@
 defmodule Experiment.Activation do
-  require Wsan.Router
+  require Router
   import Experiment.Analyzer
   use ContextEX
 
@@ -9,7 +9,7 @@ defmodule Experiment.Activation do
   # 対照実験の速度を測定
   def measure_activation_comparison(num_process) do
     pid_list = for n <- 1..num_process do
-      p = Wsan.Router.route(2, __MODULE__, :echo, [self])
+      p = Router.route(2, __MODULE__, :echo, [self])
     end
     measure(fn ->
       for pid <- pid_list do
@@ -33,7 +33,7 @@ defmodule Experiment.Activation do
   # activationの速度を測定
   def measure_activation(num_process) do
     pid_list = for n <- 1..num_process do
-      p = Wsan.Router.route(2, __MODULE__, :routine, [])
+      p = Router.route(2, __MODULE__, :routine, [])
     end
 
     time = measure(fn ->
