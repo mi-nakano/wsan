@@ -1,9 +1,8 @@
 defmodule Wsan.Sensor do
   require Logger
-  require Wsan.Actor
   alias Wsan.Event, as: Event
 
-  def start(parent_pid, sensor_id) do
+  def spawn(parent_pid, sensor_id) do
     spawn(fn ->
       routine parent_pid, sensor_id
     end)

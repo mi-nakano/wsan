@@ -9,8 +9,8 @@ defmodule Wsan.Actor do
     init_context group
 
     # センサーノードを宣言
-    Wsan.Sensor.start(self, 1)
-    Wsan.Sensor.start(self, 2)
+    Wsan.Sensor.spawn(self, 1)
+    Wsan.Sensor.spawn(self, 2)
 
     receive_msg
   end
