@@ -17,13 +17,16 @@ defmodule Wsan.Actor do
 
   defp loop(id) do
     receive do
-      {@endMsg, client} ->
-        send client, {:ok}
+      {@endMsg, sender} ->
+        send sender, {:ok}
         print(id, "end.")
-      {@msg, client, msg} ->
-        res = routine(id, msg)
-        send client, res
+      {@msg, sender, msg} ->
+        receive_msg(id, sender, msg)
         loop id
+    after
+      1_00 ->
+        routine(id)
+        loop(id)
     end
   end
 
@@ -31,15 +34,18 @@ defmodule Wsan.Actor do
   defp print(id, string), do: Logger.info("Actor#{id}: #{string}", type: :actor)
   defp print(msg), do: Logger.info(inspect(msg), type: :actor)
 
-
-  deflf routine(id, msg), %{:categoryA => :layer1} do
-    print(id, "msg came @layer1!!!!")
+  defp receive_msg(id, sender, msg) do
+    print(id, "msg came from...")
+    print(sender)
     print(msg)
   end
-  deflf routine(id, msg) do
-    print(id, "msg came @defalut.")
-    print(msg)
-    if (msg.value == 5), do: cast_activate_layer(%{:categoryA => :layer1})
+
+  deflf routine(id), %{:status => :emergency} do
+    # do something
+    print(id, "Emergency!")
+  end
+  deflf routine(id) do
+    print(id, "Default")
   end
 
 
@@ -53,10 +59,6 @@ defmodule Wsan.Actor do
 
   def cast_msg(pid, msg) do
     send pid, {@msg, self, msg}
-  end
-  def call_msg(pid, msg) do
-    cast_msg(pid, msg)
-    receive_ret
   end
 
   defp receive_ret() do

@@ -16,7 +16,7 @@ defmodule Wsan.Sensor.AbstractSensor do
       # アクターにデータを送信
       defp send_data(parent_pid, sensor_id, data) do
         send_data = %Event{type: @sensor_type, sensor_pid: self, sensor_id: sensor_id, value: data}
-        Wsan.Actor.call_msg(parent_pid, send_data)
+        Wsan.Actor.cast_msg(parent_pid, send_data)
       end
 
       # ログ出力
