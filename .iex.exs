@@ -14,7 +14,7 @@ modules = [
   Elixir.Wsan.Sensor.AbstractSensor,
   Elixir.Wsan.Sensor.Thermometer,
   Elixir.Wsan.Sensor.SmokeSensor,
-  Elixir.Wsan.Event,
+  Elixir.Wsan.Sensor.Event,
 ]
 
 # connect Nodes

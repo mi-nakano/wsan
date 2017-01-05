@@ -4,7 +4,7 @@ defmodule Wsan.Sensor.AbstractSensor do
   defmacro __using__(_opts) do
     quote do
       require Logger
-      alias Wsan.Event, as: Event
+      alias Wsan.Sensor.Event, as: Event
 
       # spawn
       def spawn(parent_pid, sensor_id) do
