@@ -5,34 +5,34 @@ defmodule Wsan.Actor do
   @endMsg :end
   @msg :msg
 
-  def start(group \\ nil) do
+  def start(id, group \\ nil) do
     init_context group
 
     # センサーノードを宣言
     Wsan.Thermometer.spawn(self, 1)
     Wsan.SmokeSensor.spawn(self, 2)
 
-    receive_msg
+    loop id
   end
 
-  defp receive_msg() do
+  defp loop(id) do
     receive do
       {@endMsg, client} ->
         send client, {:ok}
       {@msg, client, msg} ->
-        res = routine(msg)
+        res = routine(id, msg)
         send client, res
-        receive_msg
+        loop id
     end
   end
 
 
-  deflf routine(msg), %{:categoryA => :layer1} do
-    Logger.info("msg came @layer1!!!!!!!!!", type: :actor)
+  deflf routine(id, msg), %{:categoryA => :layer1} do
+    Logger.info("Actor#{id}: msg came @layer1!!!!!!!!!", type: :actor)
     Logger.info(inspect(msg), type: :actor)
   end
-  deflf routine(msg) do
-    Logger.info("msg came @default", type: :actor)
+  deflf routine(id, msg) do
+    Logger.info("Actor#{id}: msg came @default", type: :actor)
     Logger.info(inspect(msg), type: :actor)
 
     if (msg.value == 5), do: cast_activate_layer(%{:categoryA => :layer1})
