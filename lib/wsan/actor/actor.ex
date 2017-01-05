@@ -21,41 +21,41 @@ defmodule Wsan.Actor do
       end
       def start(group \\ nil) do
         init_context group
-        receiveMsg
+        receive_msg
       end
 
-      defp receiveMsg() do
+      defp receive_msg() do
         receive do
           {unquote(@endMsg), client} ->
             send client, {:ok}
           {unquote(@msg), client, msg} ->
             res = apply(__MODULE__, unquote(@funcName), [msg])
             send client, res
-            receiveMsg
+            receive_msg
         end
       end
     end
   end
 
-  defp receiveRet() do
+  defp receive_ret() do
     receive do
       res -> res
     end
   end
 
-  def castEnd(pid) do
+  def cast_end(pid) do
     send pid, {@endMsg, self}
   end
-  def callEnd(pid) do
-    castEnd(pid)
-    receiveRet
+  def call_end(pid) do
+    cast_end(pid)
+    receive_ret
   end
 
-  def castMsg(pid, msg) do
+  def cast_msg(pid, msg) do
     send pid, {@msg, self, msg}
   end
-  def callMsg(pid, msg) do
-    castMsg(pid, msg)
-    receiveRet
+  def call_msg(pid, msg) do
+    cast_msg(pid, msg)
+    receive_ret
   end
 end

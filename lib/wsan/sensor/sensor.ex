@@ -9,14 +9,14 @@ defmodule Wsan.Sensor do
     end)
   end
 
-  defp sendData(parent_pid, sensor_id, data) do
+  defp send_data(parent_pid, sensor_id, data) do
     send_data = %Event{type: :data, sensor_pid: self, sensor_id: sensor_id, value: data}
     Wsan.Actor.callMsg(parent_pid, send_data)
   end
 
   defp routine(parent_pid, sensor_id) do
     data = sense()
-    sendData(parent_pid, sensor_id, data)
+    send_data(parent_pid, sensor_id, data)
     Process.sleep(Enum.random([300, 500, 1000]))
     routine parent_pid, sensor_id
   end

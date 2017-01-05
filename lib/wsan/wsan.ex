@@ -9,6 +9,6 @@ defmodule Wsan do
     end
 
     Process.sleep 3000
-    for actor <- actors, do: callEnd(actor)
+    for actor <- actors, do: call_end(actor)
   end
 end
