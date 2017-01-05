@@ -13,7 +13,6 @@ modules = [
   Elixir.Wsan.Actor,
   Elixir.Wsan.Sensor,
   Elixir.Wsan.Event,
-  Elixir.Wsan.SimpleActor,
 ]
 
 # connect Nodes
