@@ -1,16 +1,16 @@
 IO.puts "load this project's .iex.exs"
 
 # 使用するモジュール名
-modules = [Elixir.Wsan.Actor,
+modules = [
   Elixir.ContextEX,
   Elixir.LoggerFileBackend,
-  Elixir.Sample,
+  Elixir.Router,
   Elixir.Experiment,
   Elixir.Experiment.Pingpong,
   Elixir.Experiment.Activation,
   Elixir.Experiment.Analyzer,
   Elixir.Wsan,
-  Elixir.Wsan.Router,
+  Elixir.Wsan.Actor,
   Elixir.Wsan.Sensor,
   Elixir.Wsan.Event,
   Elixir.Wsan.SimpleActor,

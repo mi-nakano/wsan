@@ -1,4 +1,4 @@
-defmodule Wsan.Router do
+defmodule Router do
   def route(number, mod, fun, args) when is_integer(number) do
     # Try to find an entry in the table or raise
     node_name = lookup_table(number)
