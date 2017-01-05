@@ -10,7 +10,7 @@ defmodule Wsan.Sensor do
   end
 
   defp sendData(parent_pid, sensor_id, data) do
-    send_data = %Event{type: :data, from: self, id: sensor_id, value: data, time: :dummy}
+    send_data = %Event{type: :data, sensor_pid: self, sensor_id: sensor_id, value: data}
     Wsan.Actor.callMsg(parent_pid, send_data)
   end
 
