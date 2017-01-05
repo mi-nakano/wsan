@@ -21,6 +21,11 @@ defmodule Wsan.Actor do
       end
       def start(group \\ nil) do
         init_context group
+
+        # センサーノードを宣言
+        Wsan.Sensor.start(self, 1)
+        Wsan.Sensor.start(self, 2)
+
         receive_msg
       end
 
