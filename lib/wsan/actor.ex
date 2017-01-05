@@ -10,7 +10,7 @@ defmodule Wsan.Actor do
 
     # センサーノードを宣言
     Wsan.Thermometer.spawn(self, 1)
-    Wsan.SmokeSensor.spawn(self, 2)
+    Wsan.Sensor.SmokeSensor.spawn(self, 2)
 
     loop id
   end
@@ -19,6 +19,7 @@ defmodule Wsan.Actor do
     receive do
       {@endMsg, client} ->
         send client, {:ok}
+        print(id, "end.")
       {@msg, client, msg} ->
         res = routine(id, msg)
         send client, res
@@ -27,14 +28,17 @@ defmodule Wsan.Actor do
   end
 
 
+  defp print(id, string), do: Logger.info("Actor#{id}: #{string}", type: :actor)
+  defp print(msg), do: Logger.info(inspect(msg), type: :actor)
+
+
   deflf routine(id, msg), %{:categoryA => :layer1} do
-    Logger.info("Actor#{id}: msg came @layer1!!!!!!!!!", type: :actor)
-    Logger.info(inspect(msg), type: :actor)
+    print(id, "msg came @layer1!!!!")
+    print(msg)
   end
   deflf routine(id, msg) do
-    Logger.info("Actor#{id}: msg came @default", type: :actor)
-    Logger.info(inspect(msg), type: :actor)
-
+    print(id, "msg came @defalut.")
+    print(msg)
     if (msg.value == 5), do: cast_activate_layer(%{:categoryA => :layer1})
   end
 
