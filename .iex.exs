@@ -11,7 +11,8 @@ modules = [
   Elixir.Experiment.Analyzer,
   Elixir.Wsan,
   Elixir.Wsan.Actor,
-  Elixir.Wsan.Sensor,
+  Elixir.Wsan.Thermometer,
+  Elixir.Wsan.SmokeSensor,
   Elixir.Wsan.Event,
 ]
 

@@ -1,8 +1,8 @@
-defmodule Wsan.Thermometer do
+defmodule Wsan.SmokeSensor do
   require Logger
   alias Wsan.Event, as: Event
 
-  @sensor_type :temperature
+  @sensor_type :smoke
 
   def spawn(parent_pid, sensor_id) do
     spawn(fn ->
@@ -23,7 +23,7 @@ defmodule Wsan.Thermometer do
   end
 
   defp sense() do
-    data = Enum.random(1..5)
+    data = Enum.random([true, false])
     Logger.info("sense! data=#{data}", type: :sensor)
     data
   end
