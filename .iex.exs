@@ -11,9 +11,10 @@ modules = [
   Elixir.Experiment.Analyzer,
   Elixir.Wsan,
   Elixir.Wsan.Actor,
-  Elixir.Wsan.Sensor,
+  Elixir.Wsan.Sensor.AbstractSensor,
+  Elixir.Wsan.Sensor.Thermometer,
+  Elixir.Wsan.Sensor.SmokeSensor,
   Elixir.Wsan.Event,
-  Elixir.Wsan.SimpleActor,
 ]
 
 # connect Nodes
