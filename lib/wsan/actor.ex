@@ -9,7 +9,7 @@ defmodule Wsan.Actor do
     init_context group
 
     # センサーノードを宣言
-    Wsan.Thermometer.spawn(self, 1)
+    Wsan.Sensor.Thermometer.spawn(self, 1)
     Wsan.Sensor.SmokeSensor.spawn(self, 2)
 
     loop id

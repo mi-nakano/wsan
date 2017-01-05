@@ -1,5 +1,5 @@
-defmodule Wsan.Sensor.SmokeSensor do
-  @sensor_type :smoke
+defmodule Wsan.Sensor.Thermometer do
+  @sensor_type :temperature
   use Wsan.Sensor.AbstractSensor
 
   defp routine(parent_pid, sensor_id) do
@@ -10,7 +10,7 @@ defmodule Wsan.Sensor.SmokeSensor do
   end
 
   defp sense() do
-    data = Enum.random([true, false])
+    data = Enum.random(1..5)
     Logger.info("sense! data=#{data}", type: :sensor)
     data
   end
