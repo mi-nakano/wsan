@@ -22,15 +22,15 @@ defmodule Experiment do
     Experiment.Analyzer.analyze(file_path)
   end
 
-  def experiment1() do
+  def experiment1(num_token \\ @num_token) do
     IO.puts "========== experiment1 =========="
     IO.puts "num_repeat = #{@num_repeat}"
-    IO.puts "num_token = #{@num_token}"
+    IO.puts "num_token = #{num_token}"
     IO.puts "----- pingpong -----"
-    do_experiment(@num_repeat, "pingpong-#{@num_token}token.log", &Experiment.Pingpong.measure_pingpong/1, [@num_token])
+    do_experiment(@num_repeat, "pingpong-#{num_token}token.log", &Experiment.Pingpong.measure_pingpong/1, [num_token])
 
     IO.puts "----- pingpong (layered) -----"
-    do_experiment(@num_repeat, "pingpong-#{@num_token}token_layered.log", &Experiment.Pingpong.measure_pingpong_lf/1, [@num_token])
+    do_experiment(@num_repeat, "pingpong-#{num_token}token_layered.log", &Experiment.Pingpong.measure_pingpong_lf/1, [num_token])
   end
 
   def experiment2(num_pairs \\ @num_pairs) do
