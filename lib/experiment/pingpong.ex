@@ -6,8 +6,8 @@ defmodule Experiment.Pingpong do
 
   defp routine(num_token, func_atom) do
     # prepare
-    n1 = Router.route(1, __MODULE__, func_atom, [self])
-    n2 = Router.route(2, __MODULE__, func_atom, [self])
+    n1 = Router.route(2, __MODULE__, func_atom, [self])
+    n2 = Router.route(3, __MODULE__, func_atom, [self])
 
     # do something, measure time
     measure(fn ->
@@ -21,8 +21,8 @@ defmodule Experiment.Pingpong do
   defp routine_multiple(num_token, num_pairs, func_atom) do
     # prepare
     pairs = for _ <- 1..num_pairs do
-      n1 = Router.route(1, __MODULE__, func_atom, [self])
-      n2 = Router.route(2, __MODULE__, func_atom, [self])
+      n1 = Router.route(2, __MODULE__, func_atom, [self])
+      n2 = Router.route(3, __MODULE__, func_atom, [self])
       {n1, n2}
     end
 
