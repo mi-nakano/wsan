@@ -11,8 +11,8 @@ defmodule Wsan.Actor do
     init_context group
 
     # センサーノードを宣言
-    Wsan.Sensor.Thermometer.spawn(self, 1)
-    Wsan.Sensor.SmokeSensor.spawn(self, 2)
+    Wsan.Sensor.Thermometer.spawn(self(), 1)
+    Wsan.Sensor.SmokeSensor.spawn(self(), 2)
 
     loop id
   end
@@ -73,13 +73,13 @@ defmodule Wsan.Actor do
   defp print(msg), do: Logger.info(inspect(msg), type: :actor)
 
   def call_end(pid) do
-    send pid, {@end_msg, self}
+    send pid, {@end_msg, self()}
     receive do
       res -> res
     end
   end
 
   def cast_msg(pid, msg) do
-    send pid, {@msg, self, msg}
+    send pid, {@msg, self(), msg}
   end
 end
