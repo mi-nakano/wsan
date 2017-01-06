@@ -38,7 +38,7 @@ defmodule Wsan.Actor do
     print(id, "Recieve: temperature, val=#{val}")
     cast_activate_layer(%{:temperature => :high})
   end
-  defp receive_msg(id, %event{type: :temperature, value: val}) when val <= 3 do
+  defp receive_msg(id, %Event{type: :temperature, value: val}) when val <= 3 do
     print(id, "recieve: temperature, val=#{val}")
     cast_activate_layer(%{:temperature => :low})
   end
