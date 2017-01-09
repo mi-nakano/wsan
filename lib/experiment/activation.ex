@@ -7,10 +7,13 @@ defmodule Experiment.Activation do
   @context %{:staus => :end}
 
   # 対照実験の速度を測定
-  def measure_activation_comparison(num_process) do
-    pid_list = for _ <- 1..num_process do
-      Router.route(2, __MODULE__, :echo, [self])
+  def measure_activation_comparison(num_node, num_process) do
+    pid_list_list = for node_id <- 2..num_node do
+      for _ <- 1..num_process do
+        Router.route(node_id, __MODULE__, :echo, [self])
+      end
     end
+    pid_list = List.flatten(pid_list_list)
     measure(fn ->
       for pid <- pid_list do
         send pid, :ok
@@ -31,16 +34,18 @@ defmodule Experiment.Activation do
   end
 
   # activationの速度を測定
-  def measure_activation(num_process) do
-    pid_list = for _ <- 1..num_process do
-      Router.route(2, __MODULE__, :routine, [])
+  def measure_activation(num_node, num_process) do
+    pid_list_list = for node_id <- 2..num_node do
+      for _ <- 1..num_process do
+        Router.route(node_id, __MODULE__, :routine, [])
+      end
     end
 
     time = measure(fn ->
       call_activate_group(@group_name, @context)
     end)
 
-    for p <- pid_list do
+    for p <- List.flatten(pid_list_list) do
       send p, :end
     end
 
