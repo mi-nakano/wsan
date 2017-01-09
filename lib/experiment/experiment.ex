@@ -12,7 +12,6 @@ defmodule Experiment do
   defp do_experiment(num, output_file, measure_func, args) do
     unless (File.exists? @log_dir), do: File.mkdir @log_dir
     file_path = @log_dir <> output_file
-    File.write(file_path, "")
     for _ <- 1..num do
       result = apply(measure_func, args)
       File.write(file_path, Integer.to_string(result), [:append])
@@ -51,8 +50,8 @@ defmodule Experiment do
     IO.puts "num_node = #{num_node}"
     IO.puts "num_process = #{num_process}"
     IO.puts "----- comparison experiment -----"
-    do_experiment(@num_repeat, "activation-#{num_process}process_comparison.log", &Experiment.Activation.measure_activation_comparison/2, [num_node, num_process])
+    do_experiment(@num_repeat, "activation-#{num_node}node-#{num_process}process_comparison.log", &Experiment.Activation.measure_activation_comparison/2, [num_node, num_process])
     IO.puts "----- group activation -----"
-    do_experiment(@num_repeat, "activation-#{num_process}.log", &Experiment.Activation.measure_activation/2, [num_node, num_process])
+    do_experiment(@num_repeat, "activation-#{num_node}node-#{num_process}.log", &Experiment.Activation.measure_activation/2, [num_node, num_process])
   end
 end
