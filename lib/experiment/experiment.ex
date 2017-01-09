@@ -45,13 +45,14 @@ defmodule Experiment do
     do_experiment(@num_repeat, "pingpong-#{@num_token}token-#{num_pairs}pair_layered.log", &Experiment.Pingpong.measure_pingpong_multiple_lf/2, [@num_token, num_pairs])
   end
 
-  def experiment_activation(num_process \\ @num_process) do
+  def experiment_activation(num_node, num_process \\ @num_process) do
     IO.puts "========== experiment_activation =========="
     IO.puts "num_repeat = #{@num_repeat}"
+    IO.puts "num_node = #{num_node}"
     IO.puts "num_process = #{num_process}"
     IO.puts "----- comparison experiment -----"
-    do_experiment(@num_repeat, "activation-#{num_process}process_comparison.log", &Experiment.Activation.measure_activation_comparison/1, [num_process])
+    do_experiment(@num_repeat, "activation-#{num_process}process_comparison.log", &Experiment.Activation.measure_activation_comparison/2, [num_node, num_process])
     IO.puts "----- group activation -----"
-    do_experiment(@num_repeat, "activation-#{num_process}.log", &Experiment.Activation.measure_activation/1, [num_process])
+    do_experiment(@num_repeat, "activation-#{num_process}.log", &Experiment.Activation.measure_activation/2, [num_node, num_process])
   end
 end
