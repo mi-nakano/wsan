@@ -25,6 +25,7 @@ defmodule Experiment.Pingpong do
       n2 = Router.route(3, __MODULE__, func_atom, [self])
       {n1, n2}
     end
+    Process.sleep 100
 
     # do something, measure time
     measure(fn ->
@@ -69,6 +70,7 @@ defmodule Experiment.Pingpong do
   end
 
   def pingpong_lf(parent) do
+    Process.sleep 10
     init_context()
     loop(parent)
   end
