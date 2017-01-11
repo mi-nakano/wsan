@@ -5,22 +5,37 @@ defmodule Experiment do
 
   @log_dir "./log/"
   @num_repeat 10
-  @num_token 100
+  @num_token 10
   @num_pairs 100
   @num_process 100
+  @time_out 3_00000
 
   defp do_experiment(num, output_file, measure_func, args) do
     unless (File.exists? @log_dir), do: File.mkdir @log_dir
     file_path = @log_dir <> output_file
-    for _ <- 1..num do
-      result = apply(measure_func, args)
-      File.write(file_path, Integer.to_string(result), [:append])
-      File.write(file_path, "\n", [:append])
-      IO.write "."
-      remove_registered_process
-    end
-    IO.puts "end"
+    for _ <- 1..num, do: experiment_once(file_path, measure_func, args)
+    IO.puts ""
     Experiment.Analyzer.analyze(file_path)
+  end
+
+  defp experiment_once(file_path, measure_func, args) do
+    remove_registered_process()
+    self_pid = self()
+    pid = spawn(fn ->
+      result = apply(measure_func, args)
+      send self_pid, {:ok, result}
+    end)
+    receive do
+      {:ok, result} ->
+        File.write(file_path, Integer.to_string(result), [:append])
+        File.write(file_path, "\n", [:append])
+        IO.write "."
+    after
+      @time_out ->
+        IO.write "F"
+        Process.exit(pid, :kill)
+        experiment_once(file_path, measure_func, args)
+    end
   end
 
   def experiment1(num_token \\ @num_token) do
