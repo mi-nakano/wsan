@@ -25,7 +25,16 @@ defmodule Experiment.Pingpong do
       n2 = Router.route(3, __MODULE__, func_atom, [self])
       {n1, n2}
     end
-    Process.sleep 100
+
+    # 準備ができるまでまつ
+    for _ <- 1..num_pairs do
+      receive do
+        :ready -> :ok
+      end
+      receive do
+        :ready -> :ok
+      end
+    end
 
     # do something, measure time
     measure(fn ->
@@ -57,6 +66,7 @@ defmodule Experiment.Pingpong do
 
   # n=0 になるまで減算、0になったらparentに送信
   def pingpong(parent) do
+    send parent, :ready
     receive do
       :end ->
         :end
@@ -72,6 +82,7 @@ defmodule Experiment.Pingpong do
   def pingpong_lf(parent) do
     Process.sleep 10
     init_context()
+    send parent, :ready
     loop(parent)
   end
 
