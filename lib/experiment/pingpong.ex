@@ -57,8 +57,11 @@ defmodule Experiment.Pingpong do
   # n=0 になるまで減算、0になったらparentに送信
   def pingpong(parent) do
     receive do
-      {_, 0} ->
+      :end ->
+        :end
+      {pid, 0} ->
         send parent, :ok
+        send pid, :end
       {pid, n} ->
         send pid, {self, n-1}
         pingpong(parent)
@@ -72,8 +75,11 @@ defmodule Experiment.Pingpong do
 
   defp loop(parent) do
     receive do
-      {_, 0} ->
+      :end ->
+        :end
+      {pid, 0} ->
         send parent, :ok
+        send pid, :end
       {pid, n} ->
         pingpong_lf_body(pid, n)
         loop(parent)
