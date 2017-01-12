@@ -9,8 +9,13 @@ defmodule Wsan.Sensor.AbstractSensor do
       # spawn
       def spawn(parent_pid, sensor_id) do
         spawn(fn ->
-          routine parent_pid, sensor_id
+          start(parent_pid, sensor_id)
         end)
+      end
+
+      # start
+      def start(parent_pid, sensor_id) do
+        routine parent_pid, sensor_id
       end
 
       # アクターにデータを送信
