@@ -1,9 +1,13 @@
 defmodule Wsan do
 
   def start() do
-    actors = for n <- 1..4 ,do: Router.route(n, Wsan.Actor, :start, [n, :actor])
+    actors = for n <- 1..4 do
+      # actor node
+      actor_pid = Router.route(n, Wsan.Actor, :start, [n, :actor])
 
-    Process.sleep 3000
-    for actor <- actors, do: Wsan.Actor.call_end(actor)
+      # sensor nodes
+      Wsan.Sensor.Thermometer.spawn(actor_pid, 1)
+      Wsan.Sensor.SmokeSensor.spawn(actor_pid, 2)
+    end
   end
 end
