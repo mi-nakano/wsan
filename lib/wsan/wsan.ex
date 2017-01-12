@@ -6,8 +6,8 @@ defmodule Wsan do
       actor_pid = Router.route(n, Wsan.Actor, :start, [n, :actor])
 
       # sensor nodes
-      Wsan.Sensor.Thermometer.spawn(actor_pid, 1)
-      Wsan.Sensor.SmokeSensor.spawn(actor_pid, 2)
+      Router.route(n, Wsan.Sensor.Thermometer, :start, [actor_pid, 1])
+      Router.route(n, Wsan.Sensor.SmokeSensor, :start, [actor_pid, 2])
     end
   end
 end
