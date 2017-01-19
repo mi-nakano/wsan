@@ -9,6 +9,14 @@ defmodule Experiment.Pingpong do
     n1 = Router.route(2, __MODULE__, func_atom, [self])
     n2 = Router.route(3, __MODULE__, func_atom, [self])
 
+    # 準備ができるまでまつ
+    receive do
+      :ready -> :ok
+    end
+    receive do
+      :ready -> :ok
+    end
+
     # do something, measure time
     measure(fn ->
       send n1, {n2, num_token}
@@ -50,14 +58,14 @@ defmodule Experiment.Pingpong do
   end
 
   def measure_pingpong(num_token) do
-    routine(num_token, :pingpong)
+    routine(num_token, :pingpong_start)
   end
   def measure_pingpong_lf(num_token) do
     routine(num_token, :pingpong_lf)
   end
 
   def measure_pingpong_multiple(num_token, num_pairs) do
-    routine_multiple(num_token, num_pairs, :pingpong)
+    routine_multiple(num_token, num_pairs, :pingpong_start)
   end
   def measure_pingpong_multiple_lf(num_token, num_pairs) do
     routine_multiple(num_token, num_pairs, :pingpong_lf)
@@ -65,8 +73,11 @@ defmodule Experiment.Pingpong do
 
 
   # n=0 になるまで減算、0になったらparentに送信
-  def pingpong(parent) do
+  def pingpong_start(parent) do
     send parent, :ready
+    pingpong(parent)
+  end
+  def pingpong(parent) do
     receive do
       :end ->
         :end
